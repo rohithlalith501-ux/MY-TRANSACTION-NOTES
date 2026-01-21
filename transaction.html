@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+  <h2>Balance: <span id="balance">₹0</span></h2>
+  
+  <div class="form-group">
+    <input type="text" id="text" placeholder="What did you buy?">
+    <input type="number" id="amount" placeholder="Amount">
+    <button id="add-btn">Add Transaction</button>
+  </div>
+
+  <ul id="list" class="transaction-list">
+    </ul>
+</div>
+<script>
+    const balance = document.getElementById('balance');
+const list = document.getElementById('list');
+const text = document.getElementById('text');
+const amount = document.getElementById('amount');
+const btn = document.getElementById('add-btn');
+
+let transactions = [];
+
+function addTransaction() {
+  if (text.value === '' || amount.value === '') return;
+
+  const transaction = {
+    id: Date.now(),
+    text: text.value,
+    amount: +amount.value // The '+' turns the string into a number
+  };
+
+  transactions.push(transaction);
+  updateUI();
+  
+  text.value = '';
+  amount.value = '';
+}
+
+function updateUI() {
+  // Clear the list first
+  list.innerHTML = '';
+
+  // Add each transaction to the list
+  transactions.forEach(t => {
+    const item = document.createElement('li');
+    item.innerHTML = `${t.text} <span>${t.amount}</span>`;
+    list.appendChild(item);
+  });
+
+  // Calculate Total
+  const total = transactions.reduce((acc, t) => acc + t.amount, 0);
+  balance.innerText = `₹${total}`;
+}
+
+btn.addEventListener('click', addTransaction);
+</script>
+    
+</body>
+</html>
